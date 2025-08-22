@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Google Slides Kiosk</title>
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      background: #000;
+      overflow: hidden;
+    }
+    iframe {
+      width: 100vw;
+      height: 100vh;
+      border: 0;
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <!-- Google Slides presentation iframe -->
+  <iframe id="deck" allowfullscreen allow="autoplay; fullscreen" referrerpolicy="no-referrer"></iframe>
+
+  <script>
+    // === CONFIG ===
+    const DECK_ID = '1uVf22BvDryK6rqAQLnJPL12sTIQkSwXn5bIBNkGch34';
+    const REFRESH_MS = 120000; // 2 minutes
+
+    // Use the /embed endpoint with autoplay+loop, minimal chrome, and slide delay of 5 seconds (5000ms)
+    const EMBED_BASE = `https://docs.google.com/presentation/d/${DECK_ID}/embed?start=true&loop=true&rm=minimal&delayms=5000`;
+
+    // Cache-busting function so refresh truly reloads the latest
+    const embedURL = () => `${EMBED_BASE}&t=${Date.now()}`;
+
+    const iframe = document.getElementById('deck');
+
+    // Initial load
+    function load() {
+      iframe.src = embedURL();
+    }
+
+    // Auto-refresh the iframe content
+    function refresh() {
+      iframe.src = embedURL();
+    }
+
+    // Kick things off
+    load();
+
+    // Auto-refresh periodically
+    setInterval(refresh, REFRESH_MS);
+  </script>
+</body>
+</html>
